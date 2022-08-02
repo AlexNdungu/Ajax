@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax: Form</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+</head>
+<body>
+
+    <h1>Submit Form</h1>
+
+    <form id="postForm" method="post">
+
+        {% csrf_token %}
+
+        <input type="text" name="name" id="name">
+        <input type="text" name="email" id="email">
+        <textarea name="bio" id="bio" ></textarea>
+
+
+        <button id="submit" type="submit" >Submit</button>
+
+    </form>
+
+    <script>
+
+        $(document).on('submit','#postForm', function(e){
+            e.preventDefault();
+            
+            $.ajax({
+                type:'POST',
+                url:"{% url 'create' %}",
+                data:{
+                    name:$('#name').val(),
+                    email:$('#email').val(),
+                    bio:$('#bio').val(),
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: function(data){
+                    alert(data)
+                }
+
+            });
+
+        });
+
+    </script>
+    
+</body>
+</html>
